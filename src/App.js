@@ -1,25 +1,30 @@
-
-import "./App.css";
-import React, { useState } from "react";
+// import logo from './logo.svg';
+// import Barcode from 'react-barcode';
+import './App.css';
+import React, { useState } from 'react';
+import BarcodeScanner from './BarcodeScanner';
 import axios from "axios";
 
 function App() {
-  const [barcode, setBarcode] = useState("");
+  const [barcode, setBarcode] = useState('');
+  const [barcodeError, setBarcodeError] = useState("");
   const [employmentId, setEmploymentId] = useState("");
   const [quantity, setQuantity] = useState("");
   const [quantityError, setquantityError] = useState("");
-  const [barcodeError, setBarcodeError] = useState("");
+
   const [employmentIdError, setEmploymentIdError] = useState("");
+
+  const handleDetected = (code) => {
+    setBarcode(code);
+    setBarcodeError("");
+  };
 
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
     setquantityError("");
   };
 
-  const handleBarcodeChange = (event) => {
-    setBarcode(event.target.value);
-    setBarcodeError("");
-  };
+
 
   const handleEmploymentIdChange = (event) => {
     setEmploymentId(event.target.value);
@@ -52,7 +57,7 @@ function App() {
         const response = await axios.post("/submit-form", {
           barcode,
           employmentId,
-          quantity,
+          // quantity,
         });
 
         console.log("Server Response:", response.data);
@@ -65,23 +70,16 @@ function App() {
       }
     }
   };
+
   return (
     <div className="App">
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="barcode">Barcode:</label>
-          <input
-            type="text"
-            id="barcode"
-            value={barcode}
-            onChange={handleBarcodeChange}
-            placeholder="Scan barcode..."
-            autoFocus
-          />
-          {barcodeError && <div className="error">{barcodeError}</div>}
-        </div>
-        <div>
-          <label htmlFor="employmentId">Employment ID:</label>
+      <h1>Barcode Scanner</h1>
+      <h1>{barcode && <p>Detected Barcode: {barcode}</p>}</h1>
+      <BarcodeScanner onDetected={handleDetected} />
+      {barcode && <p>Detected Barcode: {barcode}</p>}
+      {barcodeError && <div className="error">{barcodeError}</div>}
+      <label htmlFor="employmentId">Employment ID:</label>
           <input
             type="text"
             id="employmentId"
@@ -92,9 +90,7 @@ function App() {
           {employmentIdError && (
             <div className="error">{employmentIdError}</div>
           )}
-        </div>
-        <div>
-          <label htmlFor="quantity">Quantity:</label>
+      {/* <label htmlFor="quantity">Quantity:</label>
           <input
             type="text"
             id="quantity"
@@ -102,9 +98,8 @@ function App() {
             onChange={handleQuantityChange}
             placeholder="Enter Quantity..."
           />
-          {quantityError && <div className="error">{quantityError}</div>}
-        </div>
-        <button type="submit">Submit</button>
+          {quantityError && <div className="error">{quantityError}</div>} */}
+          <button type="submit">Submit</button>
       </form>
     </div>
   );
