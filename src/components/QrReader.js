@@ -25,20 +25,14 @@ const QrReader = () => {
     setEmploymentIdError("");
   };
 
-   // Success
-   const onScanSuccess = result => {
-    //  Print the "result" to browser console.
-    console.log(result)
-    //  Handle success.
-    //  You can do whatever you want with the scanned result.
-    setScannedResult(result?.data)
-  }
+  const onScanSuccess = (result) => {
+    console.log(result);
+    setScannedResult(result?.data);
+  };
 
-  // Fail
-  const onScanFail = err => {
-    //  Print the "err" to browser console.
-    console.log(err)
-  }
+  const onScanFail = (err) => {
+    console.log(err);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -112,20 +106,19 @@ const QrReader = () => {
   }, [qrOn]);
 
   return (
-    <>
-      <h1> Scanned Result: {scannedResult}</h1>
-      <div className="qr-reader">
-        <video ref={videoEl}></video>
+    <div className="container mt-5">
+      <h2>QR Code Scanner and Form {scannedResult}</h2>
+      <div className="qr-reader mb-3">
+        <video ref={videoEl} className="w-100"></video>
         <div ref={qrBoxEl} className="qr-box">
           <img
             src={QrFrame}
-            alt="Qr Frame"
+            alt="QR Frame"
             width={128}
             height={128}
             className="qr-frame"
           />
         </div>
-
         {scannedResult && (
           <p
             style={{
@@ -142,9 +135,9 @@ const QrReader = () => {
       </div>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="employmentId" className="form-label">
+          {/* <label htmlFor="employmentId" className="form-label">
             Employment ID:
-          </label>
+          </label> */}
           <input
             type="text"
             id="employmentId"
@@ -158,9 +151,9 @@ const QrReader = () => {
           )}
         </div>
         <div className="mb-3">
-          <label htmlFor="quantity" className="form-label">
+          {/* <label htmlFor="quantity" className="form-label">
             Quantity:
-          </label>
+          </label> */}
           <input
             type="text"
             id="quantity"
@@ -173,11 +166,13 @@ const QrReader = () => {
             <div className="invalid-feedback">{quantityError}</div>
           )}
         </div>
-        <button type="submit" className="btn btn-primary">
+        <div className="mb-3">
+        <button type="submit" className="btn btn-warning">
           Submit
         </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 };
 
